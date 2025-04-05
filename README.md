@@ -14,20 +14,28 @@ This project aims to develop a Natural Language Processing (NLP) classifier to d
 
 ## Development
 
-### Setup
+### Backend Setup
 
 This project reqires python version 3.9 or later. Once python has been setup, you can install project dependencies using the following command:
 
 ```
-pip install -r requirements.txt
+pip install -r vibe-check-rest/requirements.txt
 ```
 
-### Testing
+### Backend Testing
 
-The API for this project is built using _fastapi_. To run a development server, simply run the following command:
+The API, `vibe-check-rest`, is built using _fastapi_. To run a development server, simply run the following command:
 
 ```
-python -m fastapi dev sentimentapi/main.py
+python -m fastapi dev vibe-check-rest/main.py
 ```
 
 This will start a development server, which can be accessed at http://127.0.0.1/8000.
+
+### Extension Setup
+
+The chrome extension can be loaded at [chrome://extensions/](chrome://extensions/). With developer mode enabled, you can load `vibe-check-extension` as an unpacked extension.
+
+### Extension Testing
+
+The extension only runs when the web browser is on a page within the Spotify domain.
