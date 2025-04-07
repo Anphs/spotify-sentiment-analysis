@@ -2,10 +2,12 @@
   "manifest_version": 3,
   "name": "Vibe Check",
   "version": "1.0.0",
-  "content_scripts": [
-    {
-      "matches": ["https://open.spotify.com/*"],
-      "js": ["content.js"]
-    }
-  ]
+  "description": "Fetches the currently playing Spotify song and checks its vibe",
+  "permissions": ["identity", "storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "auth.js"
+  }
 }
