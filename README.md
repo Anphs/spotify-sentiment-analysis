@@ -41,9 +41,17 @@ This project reqires python version 3.9 or later. Once python has been setup, yo
 pip install -r vibe-check-rest/requirements.txt
 ```
 
+### Genius API Setup
+
+1. Login to [Genius](https://genius.com/signup_or_login)
+2. Create an app
+3. Generate an access token
+
+Add the access token in the environment variable `GENIUS_ACCESS_TOKEN`.
+
 ### Backend Testing
 
-The API, `vibe-check-rest`, is built using _fastapi_. To run a development server, simply run the following command:
+The API, `vibe-check-rest`, is built using _fastapi_. To run a development server, run the following command:
 
 ```
 python -m fastapi dev vibe-check-rest/main.py
