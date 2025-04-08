@@ -24,12 +24,12 @@ Note the `Client ID`.
 
 ### Extension Setup
 
-1. Edit `config.json` and set the `clientId` to be the one provided by Spotify.
+1. Edit `config.json` and set the `clientId` to be the one provided by Spotify
 2. Open [chrome://extensions/](chrome://extensions/)
 3. Enable **Developer mode**
 4. Click on **Load unpacked** and select the `vibe-check-extension` folder
 
-Note the `Extension ID`
+Note the `Extension ID`.
 
 ### Backend Setup
 

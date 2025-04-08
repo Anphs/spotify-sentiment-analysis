@@ -19,10 +19,6 @@ with open("config.json", 'r') as config_file:
   )
 
 
-@app.get("/")
-async def root():
-  return {"message": "Hello World"}
-
 @app.get("/vibe")
 async def vibe(name: str, artists: str):
   time.sleep(5) # TODO: REMOVE
