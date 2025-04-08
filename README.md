@@ -14,7 +14,26 @@ This project aims to develop a Natural Language Processing (NLP) classifier to d
 
 ## Development
 
+### Spotify API Setup
+
+1. Login to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+2. Create an app
+3. Set the redirect URI to https://**REPLACE_WITH_CHROME_EXTENSION_ID**.chromiumapp.org/spotify
+
+Note the `Client ID`.
+
+### Extension Setup
+
+1. Edit `config.json` and set the `clientId` to be the one provided by Spotify
+2. Open [chrome://extensions/](chrome://extensions/)
+3. Enable **Developer mode**
+4. Click on **Load unpacked** and select the `vibe-check-extension` folder
+
+Note the `Extension ID`.
+
 ### Backend Setup
+
+Edit `config.json` and set the `extensionId` to be the one provided by Chrome.
 
 This project reqires python version 3.9 or later. Once python has been setup, you can install project dependencies using the following command:
 
@@ -31,11 +50,3 @@ python -m fastapi dev vibe-check-rest/main.py
 ```
 
 This will start a development server, which can be accessed at http://127.0.0.1/8000.
-
-### Extension Setup
-
-The chrome extension can be loaded at [chrome://extensions/](chrome://extensions/). With developer mode enabled, you can load `vibe-check-extension` as an unpacked extension.
-
-### Extension Testing
-
-The extension only runs when the web browser is on a page within the Spotify domain.
