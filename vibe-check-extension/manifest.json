@@ -8,6 +8,7 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "service_worker": "auth.js"
+    "service_worker": "auth.js",
+    "type": "module"
   }
 }

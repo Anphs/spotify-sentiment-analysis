@@ -1,41 +1,16 @@
-async function getConfig() {
-  const res = await fetch(chrome.runtime.getURL("config.json"));
-  return res.json();
-}
+import { fetchCurrentlyPlaying, refresh } from "./spotify.js";
+import { fetchVibe } from "./vibe.js";
 
 async function refreshTokenIfNeeded(callback) {
   chrome.storage.local.get(
     ["access_token", "refresh_token", "token_expiry"],
     async (data) => {
-      if (!data.refresh_token) return callback(null);
+      if (!data.refresh_token) {
+        return callback(null);
+      }
 
       if (Date.now() > data.token_expiry) {
-        // Refresh needed
-        const { clientId } = await getConfig();
-        const body = new URLSearchParams({
-          grant_type: "refresh_token",
-          refresh_token: data.refresh_token,
-          client_id: clientId,
-        });
-
-        const res = await fetch("https://accounts.spotify.com/api/token", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: body.toString(),
-        });
-
-        const newTokenData = await res.json();
-        const newExpiry = Date.now() + newTokenData.expires_in * 1000;
-
-        chrome.storage.local.set(
-          {
-            access_token: newTokenData.access_token,
-            token_expiry: newExpiry,
-          },
-          () => {
-            callback(newTokenData.access_token);
-          }
-        );
+        await refresh(data.refresh_token, callback);
       } else {
         callback(data.access_token);
       }
@@ -56,12 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const res = await fetch(
-      "https://api.spotify.com/v1/me/player/currently-playing",
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const res = await fetchCurrentlyPlaying(token);
 
     if (!res.ok) {
       showLogin("Re-authenticate Spotify");
@@ -71,15 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = await res.json();
 
     if (data && data.item) {
-      showTrackInfo(data);
+      const track = data.item;
+      track["artists"] = track.artists.map((a) => a.name).join(", ");
 
-      const vibe_res = await fetch(
-        "http://127.0.0.1:8000/vibe?" +
-          new URLSearchParams({
-            name: data.item.name,
-            artists: data.item.artists.map((a) => a.name).join(", "),
-          }).toString()
-      );
+      showTrackInfo(track);
+
+      const vibe_res = await fetchVibe(track);
 
       const { vibe } = await vibe_res.json();
       showVibe(vibe);
@@ -94,12 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
     trackInfo.style.display = "none";
   }
 
-  function showTrackInfo(data) {
-    document.getElementById("album-art").src = data.item.album.images[0].url;
-    document.getElementById("title").textContent = data.item.name;
-    document.getElementById("artist").textContent = data.item.artists
-      .map((a) => a.name)
-      .join(", ");
+  function showTrackInfo(track) {
+    document.getElementById("album-art").src = track.album.images[0].url;
+    document.getElementById("title").textContent = track.name;
+    document.getElementById("artist").textContent = track.artists;
     trackInfo.style.display = "block";
     loginBtn.style.display = "none";
   }
