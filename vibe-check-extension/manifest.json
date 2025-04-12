@@ -5,10 +5,10 @@
   "description": "Fetches the currently playing Spotify song and checks its vibe",
   "permissions": ["identity", "storage"],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup/popup.html"
   },
   "background": {
-    "service_worker": "auth.js",
+    "service_worker": "background/auth.js",
     "type": "module"
   }
 }

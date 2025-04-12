@@ -1,5 +1,5 @@
-import { fetchCurrentlyPlaying, refresh } from "./spotify.js";
-import { fetchVibe } from "./vibe.js";
+import { fetchCurrentlyPlaying, refresh } from "../api/spotify.js";
+import { fetchVibe } from "../api/vibe.js";
 
 async function refreshTokenIfNeeded(callback) {
   chrome.storage.local.get(
