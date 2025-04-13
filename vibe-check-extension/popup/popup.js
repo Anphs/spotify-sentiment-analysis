@@ -38,20 +38,24 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (res.status === 204) {
+      showLogin("Nothing playing");
+      return;
+    }
+
     const data = await res.json();
 
-    if (data && data.item) {
+    if (data?.item) {
       const track = data.item;
       track["artists"] = track.artists.map((a) => a.name).join(", ");
 
       showTrackInfo(track);
 
-      const vibe_res = await fetchVibe(track);
+      const vibe = await fetchVibe(track);
 
-      const { vibe } = await vibe_res.json();
       showVibe(vibe);
     } else {
-      showLogin("Nothing playing");
+      showLogin("Unable to fetch song");
     }
   });
 
@@ -71,11 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showVibe(vibe) {
     const vibeResult = document.getElementById("vibe-result");
-    if (vibe) {
-      vibeResult.textContent = vibe;
-    } else {
-      vibeResult.textContent = "Failed to fetch vibe";
-    }
+    vibeResult.textContent = vibe;
     vibeResult.classList.add("no-animation");
   }
 

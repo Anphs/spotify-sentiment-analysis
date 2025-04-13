@@ -5,5 +5,16 @@ export async function fetchVibe(track) {
         name: track.name,
         artists: track.artists,
       }).toString()
-  );
+  )
+    .then(async (response) => {
+      const json = await response.json();
+      if (!json.vibe) {
+        throw new Error("No vibe found");
+      }
+      return json.vibe;
+    })
+    .catch((error) => {
+      console.error("Error fetching song vibe: ", error);
+      return "Failed to fetch vibe";
+    });
 }
