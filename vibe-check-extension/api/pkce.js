@@ -1,5 +1,5 @@
 // https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow
-async function generateCodeVerifierAndChallenge() {
+export async function generateCodeVerifierAndChallenge() {
   const generateRandomString = (length) => {
     const possible =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
