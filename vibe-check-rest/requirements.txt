@@ -1,4 +1,6 @@
-fastapi[standard]==0.115.12
 dotenv==0.9.9
+fastapi[standard]==0.115.12
 requests==2.31.0
 beautifulsoup4==4.6.0
+ollama==0.4.7
+pydantic==2.10.6

@@ -1,4 +1,4 @@
 {
-  "clientId": "[REPLACE_ME]",
+  "clientId": "a3afa94f710142a5a67ddb250b1c2482",
   "scope": "user-read-playback-state user-read-currently-playing"
 }

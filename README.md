@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project aims to develop a Natural Language Processing (NLP) classifier to determine trends by analyzing a user's Spotify playlist. By leveraging APIs such as Spotify and Genius, the classifier retrieves song titles, artists, and lyrics to perform sentiment analysis and classify moods of the songs. The goal is to categorize the mood of each song in a playlist and provide insights into the overall mood trends in the playlist.
+This project aims to develop a Natural Language Processing (NLP) classifier to determine trends by analyzing a user's current playing song on Spotify. By leveraging APIs such as Spotify and Genius, the classifier retrieves song titles, artists, and lyrics to perform sentiment analysis and classify the overall "vibe" of the songs.
 
 ### Features
 
@@ -10,9 +10,9 @@ This project aims to develop a Natural Language Processing (NLP) classifier to d
 
 - Lyrics Retrieval: Retrieves song lyrics from the Genius API for the selected songs.
 
-- Sentiment Analysis: Utilizes pre-trained large language models (LLMs) for sentiment analysis to classify the mood of each song into categories like happy, sad, energetic, calm, or romantic.
+- Sentiment Analysis: Utilizes pre-trained large language models (LLMs) via Ollama for sentiment analysis to classify the mood of each song into categories like happy, sad, energetic, calm, or romantic.
 
-## Development
+## Frontend
 
 ### Spotify API Setup
 
@@ -31,25 +31,29 @@ Note the `Client ID`.
 
 Note the `Extension ID`.
 
-### Backend Setup
+## Backend
 
-Add the `Extension ID` provided by Chrome to the environment variable `CHROME_EXTENSION_ID`.
+### Prerequisites
 
-This project reqires python version 3.9 or later. Once python has been setup, you can install project dependencies using the following command:
+This project reqires python version 3.9 or later.
 
-```
-pip install -r vibe-check-rest/requirements.txt
-```
+1. Add the `Extension ID` provided by Chrome to the environment variable `CHROME_EXTENSION_ID`
+2. Install python dependencies (`pip install -r vibe-check-rest/requirements.txt`)
 
 ### Genius API Setup
 
 1. Login to [Genius](https://genius.com/signup_or_login)
 2. Create an app
 3. Generate an access token
+4. Add the access token in the environment variable `GENIUS_ACCESS_TOKEN`
 
-Add the access token in the environment variable `GENIUS_ACCESS_TOKEN`.
+### Ollama Setup
 
-### Backend Testing
+1. Download Ollama for your operating system [here](https://ollama.com/download)
+2. Use the executable file to install Ollama
+3. Start an Ollama server (`ollama serve`)
+
+### Testing
 
 The API, `vibe-check-rest`, is built using _fastapi_. To run a development server, run the following command:
 

@@ -2,8 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from genius import GeniusWrapper
-from ollama import OllamaWrapper
-import time
+from model import ModelWrapper
 import os
 
 # Setup API application
@@ -23,21 +22,20 @@ app.add_middleware(
 genius = GeniusWrapper()
 
 # Setup Ollama wrapper
-ollama = OllamaWrapper()
+model_name = 'mistral'
+lyrics_prompt = 'Analyze the following lyrics and come up with a 1-word descriptor of the overall song vibe: "%s".'
+ollama = ModelWrapper(model_name, lyrics_prompt)
 
 # Application Endpoints
-@app.get("/vibe")
+@app.get('/vibe')
 async def vibe(name: str, artists: str):
   # Get lyrics using Genius API
-  lyrics = ""
+  lyrics = ''
   try:
     lyrics = genius.search_lyrics(artists, name, include_headers=False)
   except:
-    raise HTTPException(status_code=404, detail="Song not found")
+    raise HTTPException(status_code=404, detail='Song not found')
   
-  # TODO: extract 'vibe' from lyrics using Ollama model
-  print(lyrics)
-  
-  time.sleep(5) # TODO: REMOVE
-  
-  return {"vibe": "Sad"}
+  # extract 'vibe' from lyrics using Ollama model
+  vibe_response = ollama.get_lyrics_vibe(lyrics)
+  return vibe_response.model_dump()
