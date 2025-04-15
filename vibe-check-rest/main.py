@@ -1,26 +1,31 @@
 from fastapi import FastAPI, HTTPException
-from genius import GeniusAPI
 from fastapi.middleware.cors import CORSMiddleware
-import json
+from dotenv import load_dotenv
+from genius import GeniusWrapper
+from ollama import OllamaWrapper
 import time
+import os
+
+# Setup API application
+load_dotenv()
+extension_id = os.getenv('CHROME_EXTENSION_ID')
+extension_origin = 'chrome-extension://' + extension_id
 
 app = FastAPI()
-genius = GeniusAPI()
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins=[extension_origin],
+  allow_methods=['*'],
+  allow_headers=['*'],
+)
 
-with open("config.json", 'r') as config_file:
-  config_json = json.load(config_file)
+# Setup Genius wrapper
+genius = GeniusWrapper()
 
-  extension_id = config_json["extensionId"]
-  extension_origin = "chrome-extension://" + extension_id
+# Setup Ollama wrapper
+ollama = OllamaWrapper()
 
-  app.add_middleware(
-      CORSMiddleware,
-      allow_origins=[extension_origin],
-      allow_methods=["*"],
-      allow_headers=["*"],
-  )
-
-
+# Application Endpoints
 @app.get("/vibe")
 async def vibe(name: str, artists: str):
   # Get lyrics using Genius API

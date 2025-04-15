@@ -33,7 +33,7 @@ Note the `Extension ID`.
 
 ### Backend Setup
 
-Edit `config.json` and set the `extensionId` to be the one provided by Chrome.
+Add the `Extension ID` provided by Chrome to the environment variable `CHROME_EXTENSION_ID`.
 
 This project reqires python version 3.9 or later. Once python has been setup, you can install project dependencies using the following command:
 

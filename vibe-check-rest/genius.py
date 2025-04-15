@@ -3,7 +3,7 @@ import os
 import re
 import requests
 
-class GeniusAPI:
+class GeniusWrapper:
   API_URL = 'https://api.genius.com'
   HTML_URL = 'https://genius.com'
   
