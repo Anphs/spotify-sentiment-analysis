@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from genius import GeniusWrapper
 from model import ModelWrapper
 import os
+import string
 
 # Setup API application
 load_dotenv()
@@ -23,8 +24,8 @@ genius = GeniusWrapper()
 
 # Setup Ollama wrapper
 model_name = 'mistral'
-lyrics_prompt = 'Analyze the following lyrics and come up with a 1-word descriptor of the overall song vibe: "%s".'
-ollama = ModelWrapper(model_name, lyrics_prompt)
+vibe_prompt = 'You are an assistant that analyzes song lyrics. Respond with exactly one word for the emotional tone of the song. Do not explain. Some examples are melancholic, dreamy, energetic, and moody.'
+vibe_model = ModelWrapper(model_name, vibe_prompt)
 
 # Application Endpoints
 @app.get('/vibe')
@@ -33,9 +34,15 @@ async def vibe(name: str, artists: str):
   lyrics = ''
   try:
     lyrics = genius.search_lyrics(artists, name, include_headers=False)
+    print('Retrieved lyrics for "%s" by "%s"' % (name, artists))
   except:
+    print('Failed to retrieve lyrics for "%s" by "%s"' % (name, artists))
     raise HTTPException(status_code=404, detail='Song not found')
-  
+
   # extract 'vibe' from lyrics using Ollama model
-  vibe_response = ollama.get_lyrics_vibe(lyrics)
-  return vibe_response.model_dump()
+  vibe_response = vibe_model.get_response(lyrics)
+  vibe = vibe_response.strip().split()[0].strip(string.punctuation)     # extract first word of response
+  vibe = vibe[0].upper() + vibe[1:].lower()                             # format as camel case
+  print('Extracted vibe "%s"' % vibe)
+
+  return { 'vibe': vibe }
