@@ -1,9 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from genius import GeniusAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import time
 
 app = FastAPI()
+genius = GeniusAPI()
 
 with open("config.json", 'r') as config_file:
   config_json = json.load(config_file)
@@ -21,5 +23,16 @@ with open("config.json", 'r') as config_file:
 
 @app.get("/vibe")
 async def vibe(name: str, artists: str):
+  # Get lyrics using Genius API
+  lyrics = ""
+  try:
+    lyrics = genius.search_lyrics(artists, name, include_headers=False)
+  except:
+    raise HTTPException(status_code=404, detail="Song not found")
+  
+  # TODO: extract 'vibe' from lyrics using Ollama model
+  print(lyrics)
+  
   time.sleep(5) # TODO: REMOVE
+  
   return {"vibe": "Sad"}
