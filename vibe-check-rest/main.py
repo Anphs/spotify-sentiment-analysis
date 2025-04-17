@@ -27,9 +27,17 @@ model_name = 'mistral'
 vibe_prompt = 'You are an assistant that analyzes song lyrics. Respond with exactly one word for the emotional tone of the song. Do not explain. Some examples are melancholic, dreamy, energetic, and moody.'
 vibe_model = ModelWrapper(model_name, vibe_prompt)
 
+# Setup Result Cache
+cache = {}
+
 # Application Endpoints
 @app.get('/vibe')
 async def vibe(name: str, artists: str):
+  # return cached result, if any
+  cache_key = '%s %s' % (name, artists)
+  if cache.get(cache_key) != None:
+    return cache[cache_key]
+  
   # Get lyrics using Genius API
   lyrics = ''
   try:
@@ -44,5 +52,9 @@ async def vibe(name: str, artists: str):
   vibe = vibe_response.strip().split()[0].strip(string.punctuation)     # extract first word of response
   vibe = vibe[0].upper() + vibe[1:].lower()                             # format as camel case
   print('Extracted vibe "%s"' % vibe)
+  
+  # add response to cache
+  response = { 'vibe': vibe }
+  cache[cache_key] = response
 
-  return { 'vibe': vibe }
+  return response
