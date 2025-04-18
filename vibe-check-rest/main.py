@@ -52,9 +52,12 @@ async def vibe(name: str, artists: str):
   vibe = vibe_response.strip().split()[0].strip(string.punctuation)     # extract first word of response
   vibe = vibe[0].upper() + vibe[1:].lower()                             # format as camel case
   print('Extracted vibe "%s"' % vibe)
+
+  # TODO: generate vibe color
+  vibe_color = '#9effff'
   
   # add response to cache
-  response = { 'vibe': vibe }
+  response = { 'vibeText': vibe, 'vibeColor': vibe_color }
   cache[cache_key] = response
 
   return response

@@ -8,13 +8,13 @@ export async function fetchVibe(track) {
   )
     .then(async (response) => {
       const json = await response.json();
-      if (!json.vibe) {
+      if (!json.vibeText) {
         throw new Error("No vibe found");
       }
-      return json.vibe;
+      return json;
     })
     .catch((error) => {
       console.error("Error fetching song vibe: ", error);
-      return "Failed to fetch vibe";
+      return { vibeText: "Failed to fetch vibe" };
     });
 }

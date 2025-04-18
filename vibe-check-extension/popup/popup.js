@@ -74,9 +74,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showVibe(vibe) {
+    const { vibeText, vibeColor } = vibe;
     const vibeResult = document.getElementById("vibe-result");
-    vibeResult.textContent = vibe;
+    vibeResult.textContent = vibeText;
     vibeResult.classList.add("no-animation");
+
+    const vibeHr = document.getElementById("vibe-hr");
+    if (vibeColor) {
+      vibeHr.style.borderColor = vibeColor;
+    }
   }
 
   loginBtn.addEventListener("click", () => {
