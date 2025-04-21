@@ -22,10 +22,14 @@ app.add_middleware(
 # Setup Genius wrapper
 genius = GeniusWrapper()
 
-# Setup Ollama wrapper
-model_name = 'mistral'
+# Setup vibe model
 vibe_prompt = 'You are an assistant that analyzes song lyrics. Respond with exactly one word for the emotional tone of the song. Do not explain. Some examples are melancholic, dreamy, energetic, and moody.'
-vibe_model = ModelWrapper(model_name, vibe_prompt)
+vibe_model = ModelWrapper('mistral', vibe_prompt)
+
+# Setup color model
+colors = ['#FF5F57', '#FF8E3C', '#FFCD00', '#A2D800', '#00D084', '#1F8C8C', '#0075FF', '#6A45FF', '#8A3DFF', '#D500E6', '#FF007A', '#E7003C']
+color_prompt = 'You are an assistant that selects colors. Respond with exactly on color matching the word using this list: [%s]. Do not explain.' % ', '.join(colors)
+color_model = ModelWrapper('mistral', color_prompt)
 
 # Setup Result Cache
 cache = {}
@@ -47,17 +51,24 @@ async def vibe(name: str, artists: str):
     print('Failed to retrieve lyrics for "%s" by "%s"' % (name, artists))
     raise HTTPException(status_code=404, detail='Song not found')
 
-  # extract 'vibe' from lyrics using Ollama model
+  # extract 'vibe' from lyrics using vibe model
   vibe_response = vibe_model.get_response(lyrics)
   vibe = vibe_response.strip().split()[0].strip(string.punctuation)     # extract first word of response
   vibe = vibe[0].upper() + vibe[1:].lower()                             # format as camel case
   print('Extracted vibe "%s"' % vibe)
 
-  # TODO: generate vibe color
-  vibe_color = '#9effff'
+  # extract 'color' from vibe using color model
+  color_response = color_model.get_response(vibe)
+  color = color_response.strip().split()[0].strip(string.punctuation)   # extract first word of response
+  color = '#' + color.upper()                                           # format as hexadecimal string
+  if (color in colors):
+    print('Extracted color "%s"' % color)
+  else:
+    color = colors[0]
+    print('Failed to extract color, reverting to "%s"' % color)
   
   # add response to cache
-  response = { 'vibeText': vibe, 'vibeColor': vibe_color }
+  response = { 'vibeText': vibe, 'vibeColor': color }
   cache[cache_key] = response
 
   return response
