@@ -28,6 +28,7 @@ vibe_model = ModelWrapper('mistral', vibe_prompt)
 
 # Setup color model
 colors = ['#FF5F57', '#FF8E3C', '#FFCD00', '#A2D800', '#00D084', '#1F8C8C', '#0075FF', '#6A45FF', '#8A3DFF', '#D500E6', '#FF007A', '#E7003C']
+default_color = '#FFFFFF'
 color_prompt = 'You are an assistant that selects colors. Respond with exactly on color matching the word using this list: [%s]. Do not explain.' % ', '.join(colors)
 color_model = ModelWrapper('mistral', color_prompt)
 
@@ -64,7 +65,7 @@ async def vibe(name: str, artists: str):
   if (color in colors):
     print('Extracted color "%s"' % color)
   else:
-    color = colors[0]
+    color = default_color
     print('Failed to extract color, reverting to "%s"' % color)
   
   # add response to cache
