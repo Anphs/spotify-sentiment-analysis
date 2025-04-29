@@ -1,64 +1,86 @@
 # Spotify Sentiment Analysis
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Demo](#demo)
+- [Frontend Setup](#frontend-setup)
+  - [Spotify API Configuration](#spotify-api-configuration)
+  - [Chrome Extension Installation](#chrome-extension-installation)
+- [Backend Setup](#backend-setup)
+  - [Prerequisites](#prerequisites)
+  - [Genius API Configuration](#genius-api-configuration)
+  - [Ollama Setup](#ollama-setup)
+  - [Running the Backend](#running-the-backend)
+
 ## Overview
 
-This project aims to develop a Natural Language Processing (NLP) classifier to determine trends by analyzing a user's current playing song on Spotify. By leveraging APIs such as Spotify and Genius, the classifier retrieves song titles, artists, and lyrics to perform sentiment analysis and classify the overall "vibe" of the songs.
+This project uses Natural Language Processing (NLP) to analyze a user's currently playing songs on Spotify and determine their emotional tone. By leveraging the Spotify and Genius APIs, the app retrieves song titles, artists, and lyrics, then uses sentiment analysis via large language models (LLMs) to classify the overall "vibe" of each song.
 
-### Features
+## Key Features
 
-- Spotify Integration: Uses the Spotify API to fetch song titles and artists from a user's selected playlist.
+- **Spotify Integration**: Connects to the Spotify API to fetch the currently playing song and artist from  a user's playlist.
 
-- Lyrics Retrieval: Retrieves song lyrics from the Genius API for the selected songs.
+- **Lyrics Retrieval**: Uses the Genius API to pull song lyrics based on title and artist information.
 
-- Sentiment Analysis: Utilizes pre-trained large language models (LLMs) via Ollama for sentiment analysis to classify the mood of each song into categories like happy, sad, energetic, calm, or romantic.
+- **Sentiment Analysis**: Employs pre-trained LLMs (served via Ollama) to classify songs into moods like *happy*, *sad*, *energetic*, *calm*, or *romantic*.
 
-## Frontend
+## Demo
 
-### Spotify API Setup
+Coming soon!
 
-1. Login to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-2. Create an app
+## Frontend Setup
+
+### Spotify API Configuration
+
+1. Visit the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+2. Create a new app
 3. Set the redirect URI to https://**REPLACE_WITH_CHROME_EXTENSION_ID**.chromiumapp.org/spotify
+4. Note the `Client ID`.
 
-Note the `Client ID`.
+### Chrome Extension Installation
 
-### Extension Setup
-
-1. Edit `config.json` and set the `clientId` to be the one provided by Spotify
-2. Open [chrome://extensions/](chrome://extensions/)
+1. Edit `config.json` and set `clientId` to your Spotify `Client ID`
+2. Go to [chrome://extensions/](chrome://extensions/)
 3. Enable **Developer mode**
 4. Click on **Load unpacked** and select the `vibe-check-extension` folder
+5. Note the `Extension ID` shown in the extension details
 
-Note the `Extension ID`.
-
-## Backend
+## Backend Setup
 
 ### Prerequisites
 
 This project reqires python version 3.9 or later.
 
-1. Add the `Extension ID` provided by Chrome to the environment variable `CHROME_EXTENSION_ID`
-2. Install python dependencies (`pip install -r vibe-check-rest/requirements.txt`)
+1. Set the `CHROME_EXTENSION_ID` as an environment variable
+2. Install python dependencies 
 
-### Genius API Setup
+```
+pip install -r vibe-check-rest/requirements.txt
+```
 
-1. Login to [Genius](https://genius.com/signup_or_login)
-2. Create an app
-3. Generate an access token
-4. Add the access token in the environment variable `GENIUS_ACCESS_TOKEN`
+### Genius API Configuration
+
+1. Sign up or log in to [Genius](https://genius.com/signup_or_login)
+2. Create an app and generate an access token
+3. Add the access token as an environment variable: `GENIUS_ACCESS_TOKEN`
 
 ### Ollama Setup
 
-1. Download Ollama for your operating system [here](https://ollama.com/download)
-2. Use the executable file to install Ollama
-3. Start an Ollama server (`ollama serve`)
+1. [Download Ollama](https://ollama.com/download) and install it for your OS
+2. Start the Ollama server
 
-### Testing
+```
+ollama serve
+```
 
-The API, `vibe-check-rest`, is built using _fastapi_. To run a development server, run the following command:
+### Running the Backend
+
+The backend is builg with **FastAPI**. To start the development server:
 
 ```
 python -m fastapi dev vibe-check-rest/main.py
 ```
 
-This will start a development server, which can be accessed at http://127.0.0.1/8000.
+You can directly access the server at http://127.0.0.1/8000.
