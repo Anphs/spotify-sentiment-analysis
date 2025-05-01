@@ -4,7 +4,6 @@
 
 - [Overview](#overview)
 - [Key Features](#key-features)
-- [Demo](#demo)
 - [Frontend Setup](#frontend-setup)
   - [Spotify API Configuration](#spotify-api-configuration)
   - [Chrome Extension Installation](#chrome-extension-installation)
@@ -25,10 +24,6 @@ This project uses Natural Language Processing (NLP) to analyze a user's currentl
 - **Lyrics Retrieval**: Uses the Genius API to pull song lyrics based on title and artist information.
 
 - **Sentiment Analysis**: Employs pre-trained LLMs (served via Ollama) to classify songs into moods like *happy*, *sad*, *energetic*, *calm*, or *romantic*.
-
-## Demo
-
-Coming soon!
 
 ## Frontend Setup
 
