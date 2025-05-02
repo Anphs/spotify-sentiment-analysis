@@ -23,7 +23,7 @@ app.add_middleware(
 genius = GeniusWrapper()
 
 # Setup vibe model
-vibe_prompt = 'You are an assistant that analyzes song lyrics. Respond with exactly one word for the emotional tone of the song. Do not explain. Some examples are melancholic, dreamy, energetic, and moody.'
+vibe_prompt = 'You are an assistant that analyzes song lyrics. Respond with exactly one word for the emotional tone of the song. Do not explain. Some examples are melancholic, dreamy, energetic, romantic, sad, and angry.'
 vibe_model = ModelWrapper('mistral', vibe_prompt)
 
 # Setup color model
